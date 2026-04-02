@@ -10,6 +10,8 @@ Teams using Cursor (or similar AI coding assistants) accumulate valuable enginee
 
 ```
 KnowledgeExporter/
+├── install-skill.bat                     ← One-click install (Windows)
+├── install-skill.sh                      ← One-click install (macOS/Linux)
 ├── 使用指南.md                           ← User guide (Chinese)
 ├── cursor-knowledge-export-checklist.md  ← Standalone checklist (printable)
 ├── skill/
@@ -41,7 +43,16 @@ KnowledgeExporter/
 
 ### 1. Install Skill (global, all projects)
 
-Copy `skill/` folder to:
+**Option A: Run the install script (recommended)**
+```bash
+# Windows
+install-skill.bat
+
+# macOS / Linux
+bash install-skill.sh
+```
+
+**Option B: Manual copy** — copy `skill/` folder to:
 ```
 Windows: %USERPROFILE%\.cursor\skills\knowledge-export\
 macOS:   ~/.cursor/skills/knowledge-export/
