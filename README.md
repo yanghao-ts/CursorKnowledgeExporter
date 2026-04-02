@@ -1,104 +1,43 @@
 # CursorKnowledgeExporter
 
-> Automatically analyze, classify, and archive knowledge from AI-assisted development conversations.
+自动分析 Cursor 对话内容，按研发流程阶段归类，保存为结构化知识文档。
 
-Teams using Cursor accumulate valuable engineering knowledge through daily AI interactions — design decisions, bug analysis, build procedures, testing methods, and more. Most of this knowledge lives only in transient chat sessions and is lost when those sessions expire.
+## 解决什么问题
 
-**CursorKnowledgeExporter** automatically analyzes conversation content, maps it to R&D workflow phases, and saves it as structured, reusable documentation.
+团队使用 Cursor 进行日常开发时，大量有价值的工程知识（设计决策、Bug 分析过程、编译方法、测试经验等）仅存在于 AI 对话中。一旦对话过期或停止使用 Cursor，这些知识将永久丢失。
 
-## How It Works
+本工具帮助团队将这些对话中的知识**自动提取、分类、归档**为独立的 Markdown 文档。
 
-```
-Conversation content
-       ↓
-  AI analyzes & classifies
-       ↓
-  Maps to R&D phase (coding / bug fix / design / ...)
-       ↓
-  Generates structured doc → saves to doc/
-```
-
-Two complementary components:
-
-| Component | Role | How it works |
-|-----------|------|-------------|
-| **Skill** | On-demand archiving | User says "保存对话" → AI analyzes full conversation → classifies → saves docs |
-| **Rule** | Just-in-time prompting | After completing a task (e.g. fixing a bug), AI proposes to save a summary doc |
-
-Both use a shared **asset checklist** (6 R&D phases, 31 items) as classification index.
-
-## What's Included
+## 工作原理
 
 ```
-KnowledgeExporter/
-├── install-skill.bat                     ← One-click install (Windows)
-├── install-skill.sh                      ← One-click install (macOS/Linux)
-├── 使用指南.md                           ← User guide (Chinese)
-├── cursor-knowledge-export-checklist.md  ← Standalone checklist (printable)
-├── skill/
-│   ├── SKILL.md                          ← Cursor Skill: analyze & archive
-│   └── references/
-│       └── asset-checklist.md            ← Shared classification index
-└── rule/
-    └── knowledge-recording.mdc           ← Cursor Rule: just-in-time save prompts
+对话内容 → AI 分析提取 → 映射到研发阶段 → 生成文档 → 保存到 doc/
 ```
 
-## Coverage: 6 R&D Phases
+两个组件协作：
 
-| Phase | Items | Focus |
-|-------|:-----:|-------|
-| ① Requirements Analysis | 3 | Requirement breakdown, feasibility, effort estimation |
-| ② Design | 4 | Architecture, decisions, interfaces, tech selection |
-| ③ Coding | 7 | Build methods, environment setup, dependencies, deployment |
-| ④ Self-testing | 4 | Test methods, unit tests, smoke tests |
-| ⑤ Bug Fixing | 5 | Bug analysis records, methodology, patterns, performance |
-| ⑥ Testing | 8 | Test cases, automation scripts, frameworks, cross-machine collaboration |
+| 组件 | 作用 | 触发方式 |
+|------|------|---------|
+| **Skill** | 分析对话内容，归类保存为文档 | 用户说"保存对话" |
+| **Rule** | 完成具体工作后，提议生成对应文档 | 自动（工作完成时） |
 
-## Quick Start
+## 覆盖范围
 
-### 1. Install Skill (global, all projects)
+按 6 个研发阶段分类，共 31 项知识资产：
 
-**Option A: Run the install script (recommended)**
-```bash
-# Windows
-install-skill.bat
+| 阶段 | 项数 | 涵盖内容 |
+|------|:----:|---------|
+| ① 需求分析 | 3 | 需求拆解、可行性分析、工作量评估 |
+| ② 设计 | 4 | 架构设计、设计决策、接口定义、技术选型 |
+| ③ 编码 | 7 | 编译构建、环境搭建、依赖管理、部署发布 |
+| ④ 开发自验 | 4 | 自测方法、单元测试、冒烟测试 |
+| ⑤ Bug 修复 | 5 | Bug 分析记录、分析方法论、高频模式、性能分析 |
+| ⑥ 测试 | 8 | 测试方法、用例定义、自动化脚本、跨平台协作 |
 
-# macOS / Linux
-bash install-skill.sh
-```
+## 快速开始
 
-**Option B: Manual copy** — copy `skill/` folder to:
-```
-Windows: %USERPROFILE%\.cursor\skills\knowledge-export\
-macOS:   ~/.cursor/skills/knowledge-export/
-```
+详见 [使用指南.md](使用指南.md)。
 
-### 2. Install Rule (per project)
-
-Copy `rule/knowledge-recording.mdc` to:
-```
-<project-root>/.cursor/rules/knowledge-recording.mdc
-```
-
-### 3. Use
-
-**On-demand archiving (Skill):**
-- Say **"保存对话"** — AI analyzes the conversation, classifies content by R&D phase, generates and saves docs
-
-**Just-in-time saving (Rule):**
-- After fixing a bug, AI proposes: *"Bug fixed. Save the analysis process as a doc?"*
-- Reply "好" / "save" / "yes" → doc is generated and saved automatically
-
-## Extending the Checklist
-
-Append a row to the corresponding phase table in `skill/references/asset-checklist.md`:
-
-```markdown
-| 3.8 | New asset name | Description | Reference prompt text |
-```
-
-Both Skill and Rule will automatically pick up the new entry.
-
-## License
+## 许可证
 
 [MIT](LICENSE)
