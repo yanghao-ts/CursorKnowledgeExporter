@@ -1,10 +1,31 @@
 # CursorKnowledgeExporter
 
-> Extract and preserve knowledge generated during AI-assisted development workflows.
+> Automatically analyze, classify, and archive knowledge from AI-assisted development conversations.
 
-Teams using Cursor (or similar AI coding assistants) accumulate valuable engineering knowledge through daily interactions — design decisions, bug analysis, build procedures, testing methods, and more. Most of this knowledge lives only in transient AI chat sessions and is lost when those sessions expire.
+Teams using Cursor accumulate valuable engineering knowledge through daily AI interactions — design decisions, bug analysis, build procedures, testing methods, and more. Most of this knowledge lives only in transient chat sessions and is lost when those sessions expire.
 
-**CursorKnowledgeExporter** provides a structured toolkit to systematically convert these transient AI interactions into reusable, long-term engineering assets.
+**CursorKnowledgeExporter** automatically analyzes conversation content, maps it to R&D workflow phases, and saves it as structured, reusable documentation.
+
+## How It Works
+
+```
+Conversation content
+       ↓
+  AI analyzes & classifies
+       ↓
+  Maps to R&D phase (coding / bug fix / design / ...)
+       ↓
+  Generates structured doc → saves to doc/
+```
+
+Two complementary components:
+
+| Component | Role | How it works |
+|-----------|------|-------------|
+| **Skill** | On-demand archiving | User says "保存对话" → AI analyzes full conversation → classifies → saves docs |
+| **Rule** | Just-in-time prompting | After completing a task (e.g. fixing a bug), AI proposes to save a summary doc |
+
+Both use a shared **asset checklist** (6 R&D phases, 31 items) as classification index.
 
 ## What's Included
 
@@ -15,18 +36,12 @@ KnowledgeExporter/
 ├── 使用指南.md                           ← User guide (Chinese)
 ├── cursor-knowledge-export-checklist.md  ← Standalone checklist (printable)
 ├── skill/
-│   ├── SKILL.md                          ← Cursor Skill: scan & export
+│   ├── SKILL.md                          ← Cursor Skill: analyze & archive
 │   └── references/
-│       └── asset-checklist.md            ← Shared asset registry (extensible)
+│       └── asset-checklist.md            ← Shared classification index
 └── rule/
-    └── knowledge-recording.mdc           ← Cursor Rule: daily auto-reminders
+    └── knowledge-recording.mdc           ← Cursor Rule: just-in-time save prompts
 ```
-
-| Component | Role | Trigger |
-|-----------|------|---------|
-| **Skill** | Systematically scan project, identify missing docs, guide generation | User says "导出知识资产" / "export knowledge" |
-| **Rule** | Detect work patterns during daily dev, remind to record | Automatic (alwaysApply) |
-| **asset-checklist.md** | Shared data source defining 6 R&D phases × 31 asset items with prompt templates | Referenced by both Skill & Rule |
 
 ## Coverage: 6 R&D Phases
 
@@ -67,20 +82,22 @@ Copy `rule/knowledge-recording.mdc` to:
 
 ### 3. Use
 
-In Cursor chat, say:
-- **"帮我导出知识资产"** — Full scan & guided export
-- **"检查文档完整性"** — Check what's missing
-- **"帮我补充编译指导文档"** — Generate a specific document
+**On-demand archiving (Skill):**
+- Say **"保存对话"** — AI analyzes the conversation, classifies content by R&D phase, generates and saves docs
+
+**Just-in-time saving (Rule):**
+- After fixing a bug, AI proposes: *"Bug fixed. Save the analysis process as a doc?"*
+- Reply "好" / "save" / "yes" → doc is generated and saved automatically
 
 ## Extending the Checklist
 
-To add new knowledge asset types, simply append a row to the corresponding phase table in `skill/references/asset-checklist.md`:
+Append a row to the corresponding phase table in `skill/references/asset-checklist.md`:
 
 ```markdown
 | 3.8 | New asset name | Description | Reference prompt text |
 ```
 
-Both Skill and Rule will automatically pick up the new entry on next execution.
+Both Skill and Rule will automatically pick up the new entry.
 
 ## License
 
